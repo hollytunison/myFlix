@@ -1,5 +1,5 @@
-const express = require('express')
-morgan = require('morgan'),
+const express = require('express'),
+    morgan = require('morgan'),
     bodyParser = require('body-parser'),
     uuid = require('uuid');
 const app = express();
@@ -12,6 +12,8 @@ const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
+const Directors = Models.Director;
+const Genres = Models.Genre;
 
 mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -50,9 +52,21 @@ app.get('/movies/:Title', (req, res) => {
         });
 });
 
+//Get a list of all directors
+app.get('/directors', (req, res) => {
+    Directors.find()
+        .then(directors => {
+            res.status(201).json(directors);
+        })
+        .catch(error => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        });
+});
+
 // GET a data about a single director by name
-app.get('/director/:Name', (req, res) => {
-    Director.findOne({ Name: req.params.Name })
+app.get('/directors/:Name', (req, res) => {
+    Directors.findOne({ Name: req.params.Name })
         .then((director) => {
             res.json(director);
         })
@@ -62,9 +76,21 @@ app.get('/director/:Name', (req, res) => {
         });
 });
 
+//Get a list of all genres
+app.get('/genres', (req, res) => {
+    Genres.find()
+        .then(genres => {
+            res.status(201).json(genres);
+        })
+        .catch(error => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        });
+});
+
 // GET a data about a genre
-app.get('/genre/:Name', (req, res) => {
-    Genre.findOne({ Name: req.params.Name })
+app.get('/genres/:Name', (req, res) => {
+    Genres.findOne({ Name: req.params.Name })
         .then((genre) => {
             res.json(genre);
         })
@@ -194,14 +220,14 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 
 
 //Remove a movie to a user's list of favorites
-app.delete("/users/:Username/movies/:MovieID", (req, res) => {
+app.delete('/users/:Username/movies/:MovieID', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username }, {
             $pull: { FavoriteMovies: req.params.MovieID }
         }, { new: true }, // This line makes sure that the updated document is returned
         (err, updatedUser) => {
             if (err) {
                 console.error(err);
-                res.status(500).send("Error: " + err);
+                res.status(500).send('Error: ' + err);
             } else {
                 res.json(updatedUser);
             }
