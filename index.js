@@ -173,20 +173,6 @@ app.get('/users/:Username', (req, res) => {
         });
 });
 
-// Add a new user
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
-    Users.findOneAndUpdate({ Username: req.params.Username }, {
-            $push: { FavoriteMovies: req.params.MovieID }
-        }, { new: true }, // This line makes sure that the updated document is returned
-        (err, updatedUser) => {
-            if (err) {
-                console.error(err);
-                res.status(500).send('Error: ' + err);
-            } else {
-                res.json(updatedUser);
-            }
-        });
-});
 
 // Update user info
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
