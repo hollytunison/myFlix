@@ -23,8 +23,10 @@ app.get('static/documentation.html', (req, res) => {});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let auth = require('./auth')(app);
+
 const passport = require('passport');
+app.use(passport.initialize());
+let auth = require('./auth')(app);
 require('./passport');
 
 
