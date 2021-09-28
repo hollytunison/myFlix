@@ -173,9 +173,8 @@ app.get('/users/:Username', (req, res) => {
         });
 });
 
-
 // Update user info
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/users/:Username', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username }, {
             $set: {
                 Username: req.body.Username,
