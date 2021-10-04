@@ -1,32 +1,44 @@
 const express = require('express'),
     morgan = require('morgan'),
+    mongoose = require('mongoose'),
+    Models = require('./models.js'),
+    uuid = require('uuid'),
     bodyParser = require('body-parser'),
-    uuid = require('uuid');
-const app = express();
+    { check, validationResult } = require('express-validator');
 
-// Integrating Mongoose with a REST API
-const mongoose = require('mongoose');
-const Models = require('./models.js');
+const app = express(),
+    Movies = Models.Movie,
+    Users = Models.User,
+    Genres = Models.Genre,
+    Directors = Models.Director,
+    cors = require('cors');
 
-const Movies = Models.Movie;
-const Users = Models.User;
-const Directors = Models.Director;
-const Genres = Models.Genre;
+const { check, validationResult } = require('express-validator');
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-
-// Logging middleware
-app.use(morgan('common'));
-// Sending static files
-app.use(express.static('public'));
-app.get('static/documentation.html', (req, res) => {});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
+app.use(morgan('common'));
+app.get('static/documentation.html', (req, res) => {});
+let allowedOrigins = [
+    'http://localhost:8080',
+    'http://testsite.com'
+];
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            let message = 'The CORS policy for this application doesn’t allow access from origin ' +
+                origin;
+            return callback(new Error(message), false);
+        }
+        return callback(null, true);
+    }
+}));
+// ------- LOCALHOST CONNECTION STRING for testing purposes ------ //
+//mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+let auth = require('./auth')(app); //This ensures that Express is available in “auth.js” file as well.
 const passport = require('passport');
-app.use(passport.initialize());
-let auth = require('./auth')(app);
 require('./passport');
 
 
@@ -108,16 +120,31 @@ app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req,
 });
 
 //Add a user
-app.post('/users', (req, res) => {
-    Users.findOne({ Username: req.body.Username })
+app.post('/users', [
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+], (req, res) => {
+
+    // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
         .then((user) => {
             if (user) {
-                return res.status(400).send(req.body.Username + 'already exists');
+                //If the user is found, send a response that it already exists
+                return res.status(400).send(req.body.Username + ' already exists');
             } else {
                 Users
                     .create({
                         Username: req.body.Username,
-                        Password: req.body.Password,
+                        Password: hashedPassword,
                         Email: req.body.Email,
                         Birthday: req.body.Birthday
                     })
@@ -125,7 +152,7 @@ app.post('/users', (req, res) => {
                     .catch((error) => {
                         console.error(error);
                         res.status(500).send('Error: ' + error);
-                    })
+                    });
             }
         })
         .catch((error) => {
@@ -267,6 +294,7 @@ app.use((err, req, res, next) => {
 });
 
 // listen for requests
-app.listen(5500, () => {
-    console.log('Your app is listening on port 5500.');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+    console.log('Listening on Port ' + port);
 });
