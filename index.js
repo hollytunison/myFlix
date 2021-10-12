@@ -4,14 +4,13 @@ const express = require('express'),
     Models = require('./models.js'),
     uuid = require('uuid'),
     bodyParser = require('body-parser'),
-    { check, validationResult } = require('express-validator');
 
-const app = express(),
-    Movies = Models.Movie,
-    Users = Models.User,
-    Genres = Models.Genre,
-    Directors = Models.Director,
-    cors = require('cors');
+    const app = express(),
+        Movies = Models.Movie,
+        Users = Models.User,
+        Genres = Models.Genre,
+        Directors = Models.Director,
+        cors = require('cors');
 
 const { check, validationResult } = require('express-validator');
 
@@ -34,6 +33,7 @@ app.use(cors({
         return callback(null, true);
     }
 }));
+
 // ------- LOCALHOST CONNECTION STRING for testing purposes ------ //
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true }); //
 
@@ -122,46 +122,52 @@ app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req,
 });
 
 //Add a user
-app.post('/users', [
-    check('Username', 'Username is required').isLength({ min: 5 }),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email does not appear to be valid').isEmail()
-], (req, res) => {
+app.post('/users',
+    // Validation logic here for request
+    //you can either use a chain of methods like .not().isEmpty()
+    //which means "opposite of isEmpty" in plain english "is not empty"
+    //or use .isLength({min: 5}) which means
+    //minimum value of 5 characters are only allowed
+    [
+        check('Username', 'Username is required').isLength({ min: 5 }),
+        check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+        check('Password', 'Password is required').not().isEmpty(),
+        check('Email', 'Email does not appear to be valid').isEmail()
+    ], (req, res) => {
 
-    // check the validation object for errors
-    let errors = validationResult(req);
+        // check the validation object for errors
+        let errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
 
-    let hashedPassword = Users.hashPassword(req.body.Password);
-    Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
-        .then((user) => {
-            if (user) {
-                //If the user is found, send a response that it already exists
-                return res.status(400).send(req.body.Username + ' already exists');
-            } else {
-                Users
-                    .create({
-                        Username: req.body.Username,
-                        Password: hashedPassword,
-                        Email: req.body.Email,
-                        Birthday: req.body.Birthday
-                    })
-                    .then((user) => { res.status(201).json(user) })
-                    .catch((error) => {
-                        console.error(error);
-                        res.status(500).send('Error: ' + error);
-                    });
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-        });
-});
+        let hashedPassword = Users.hashPassword(req.body.Password);
+        Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
+            .then((user) => {
+                if (user) {
+                    //If the user is found, send a response that it already exists
+                    return res.status(400).send(req.body.Username + ' already exists');
+                } else {
+                    Users
+                        .create({
+                            Username: req.body.Username,
+                            Password: hashedPassword,
+                            Email: req.body.Email,
+                            Birthday: req.body.Birthday
+                        })
+                        .then((user) => { res.status(201).json(user) })
+                        .catch((error) => {
+                            console.error(error);
+                            res.status(500).send('Error: ' + error);
+                        });
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                res.status(500).send('Error: ' + error);
+            });
+    });
 
 // Delete a user by username
 app.delete('/users/:Username', (req, res) => {
