@@ -19,6 +19,19 @@ let movieSchema = mongoose.Schema({
     Featured: Boolean
 });
 
+let directorSchema = mongoose.Schema({
+    Name: { type: String, required: true },
+    Bio: { type: String, required: true },
+    Birth: { type: String, required: true },
+    Death: { type: String },
+    Films: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
+});
+
+let genreSchema = mongoose.Schema({
+    Name: { type: String, required: true },
+    Description: { type: String, required: true }
+});
+
 let userSchema = mongoose.Schema({
     Username: { type: String, required: true },
     Password: { type: String, required: true },
@@ -34,19 +47,6 @@ userSchema.statics.hashPassword = (password) => {
 userSchema.methods.validatePassword = function(password) {
     return bcrypt.compareSync(password, this.Password);
 };
-
-let directorSchema = mongoose.Schema({
-    Name: { type: String, required: true },
-    Bio: { type: String, required: true },
-    Birth: { type: String, required: true },
-    Death: { type: String },
-    Films: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
-});
-
-let genreSchema = mongoose.Schema({
-    Name: { type: String, required: true },
-    Description: { type: String, required: true }
-});
 
 // Creating Models
 let Movie = mongoose.model('Movie', movieSchema);
