@@ -65,7 +65,7 @@ app.get('/movies', (req, res) => {
 });
 
 // GET a data about a single movie by its title
-app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies/:Title', (req, res) => {
     Movies.findOne({ Title: req.params.Title })
         .then((movie) => {
             res.json(movie);
