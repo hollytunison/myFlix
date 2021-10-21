@@ -24,6 +24,7 @@ let allowedOrigins = [
     'http://testsite.com',
     'http://localhost:5501',
     'https://mysterious-plains-19334.herokuapp.com',
+    'http://localhost:1234'
 ];
 
 app.use(cors({
