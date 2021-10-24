@@ -3,7 +3,7 @@ const express = require('express'),
     mongoose = require('mongoose'),
     Models = require('./models.js'),
     bodyParser = require('body-parser'),
-    dotenv = require('dotenv'),
+    //dotenv = require('dotenv'),
     //{ check, validationResult } = require('express-validator');
     //dotenv.config();
 
