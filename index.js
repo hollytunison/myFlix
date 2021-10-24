@@ -3,11 +3,10 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const {
-    check,
-    validationResult
-} = require('express-validator');
 
+dotenv = require('dotenv'), { check, validationResult } = require('express-validator');
+
+dotenv.config();
 app.use(morgan('common'));
 app.use(express.json());
 app.use(express.static('public'));
@@ -19,31 +18,29 @@ const Users = Models.User;
 const Movies = Models.Genre;
 const Users = Models.Director;
 
-//cors
-app.use(cors());
 
 //   dotenv = require('dotenv'), { check, validationResult } = require('express-validator');
 //dotenv.config();
 
 let allowedOrigins = [
-    'https://mysterious-plains-19334.herokuapp.com/movies',
+    'https://mysterious-plains-19334.herokuapp.com',
     'http://localhost:8080',
     'http://testsite.com',
     'http://localhost:5501',
     'http://localhost:1234'
 ];
 
-//app.use(cors({
-//    origin: (origin, callback) => {
-//      if (!origin) return callback(null, true);
-//        if (allowedOrigins.indexOf(origin) === -1) {
-//            let message = 'The CORS policy for this application doesn’t allow access from origin ' +
-//                origin;
-//            return callback(new Error(message), false);
-//        }
-//        return callback(null, true);
-//    }
-//}));
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            let message = 'The CORS policy for this application doesn’t allow access from origin ' +
+                origin;
+            return callback(new Error(message), false);
+        }
+        return callback(null, true);
+    }
+}));
 
 // middleware
 app.use(bodyParser.json());
@@ -54,12 +51,8 @@ app.use(bodyParser.urlencoded({
 // ------- LOCALHOST CONNECTION STRING for testing purposes ------ //
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true }); //
 
-//mongoose.connect(process.env.CONNECTION_URI || 'mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI || 'http://localhost:1234', { useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connect(process.env.CONNECTION_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
 
 let auth = require('./auth')(app); //This ensures that Express is available in “auth.js” file as well.
 const passport = require('passport');
