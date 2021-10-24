@@ -3,16 +3,16 @@ const express = require('express'),
     mongoose = require('mongoose'),
     Models = require('./models.js'),
     bodyParser = require('body-parser'),
-    //dotenv = require('dotenv'),
-    //{ check, validationResult } = require('express-validator');
-    //dotenv.config();
+    dotenv = require('dotenv'),
+    { check, validationResult } = require('express-validator');
+dotenv.config();
 
-    const app = express(),
-        Movies = Models.Movie,
-        Users = Models.User,
-        Genres = Models.Genre,
-        Directors = Models.Director,
-        cors = require('cors');
+const app = express(),
+    Movies = Models.Movie,
+    Users = Models.User,
+    Genres = Models.Genre,
+    Directors = Models.Director,
+    cors = require('cors');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,10 +20,10 @@ app.use(morgan('common'));
 app.use(express.static('public'));
 
 let allowedOrigins = [
+    'https://mysterious-plains-19334.herokuapp.com/movies',
     'http://localhost:8080',
     'http://testsite.com',
     'http://localhost:5501',
-    'https://mysterious-plains-19334.herokuapp.com/movies',
     'http://localhost:1234'
 ];
 
