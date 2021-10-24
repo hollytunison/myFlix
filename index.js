@@ -4,15 +4,15 @@ const express = require('express'),
     Models = require('./models.js'),
     bodyParser = require('body-parser'),
     dotenv = require('dotenv'),
-    { check, validationResult } = require('express-validator');
-dotenv.config();
+    //{ check, validationResult } = require('express-validator');
+    //dotenv.config();
 
-const app = express(),
-    Movies = Models.Movie,
-    Users = Models.User,
-    Genres = Models.Genre,
-    Directors = Models.Director,
-    cors = require('cors');
+    const app = express(),
+        Movies = Models.Movie,
+        Users = Models.User,
+        Genres = Models.Genre,
+        Directors = Models.Director,
+        cors = require('cors');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -104,7 +104,7 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
 });
 
 //Get a list of all genres
-app.get('/genres', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/genres', (req, res) => {
     Genres.find()
         .then(genres => {
             res.status(201).json(genres);
@@ -116,7 +116,7 @@ app.get('/genres', passport.authenticate('jwt', { session: false }), (req, res) 
 });
 
 // GET a data about a genre
-app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/genres/:Name', (req, res) => {
     Genres.findOne({ Name: req.params.Name })
         .then((genre) => {
             res.json(genre);
