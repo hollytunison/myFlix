@@ -23,7 +23,7 @@ let allowedOrigins = [
     'http://localhost:8080',
     'http://testsite.com',
     'http://localhost:5501',
-    'https://mysterious-plains-19334.herokuapp.com',
+    'https://mysterious-plains-19334.herokuapp.com/movies',
     'http://localhost:1234'
 ];
 
