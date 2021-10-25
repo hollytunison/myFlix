@@ -15,12 +15,8 @@ const mongoose = require('mongoose');
 const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
-const Movies = Models.Genre;
-const Users = Models.Director;
-
-
-//   dotenv = require('dotenv'), { check, validationResult } = require('express-validator');
-//dotenv.config();
+const Genres = Models.Genre;
+const Directors = Models.Director;
 
 let allowedOrigins = [
     'https://mysterious-plains-19334.herokuapp.com',
@@ -53,9 +49,11 @@ app.use(bodyParser.urlencoded({
 
 mongoose.connect(process.env.CONNECTION_URI || 'mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-let auth = require('./auth')(app); //This ensures that Express is available in “auth.js” file as well.
 const passport = require('passport');
+app.use(passport.initialize());
+let auth = require('./auth')(app); //This ensures that Express is available in “auth.js” file as well.
 require('./passport');
+
 
 
 // Return a welcome message
