@@ -47,12 +47,12 @@ app.use(bodyParser.urlencoded({
 // ------- LOCALHOST CONNECTION STRING for testing purposes ------ //
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true }); //
 
-//mongoose.connect(process.env.CONNECTION_URI || 'mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI || 'mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connect(process.env.CONNECTION_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+//mongoose.connect(process.env.CONNECTION_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+//});
 
 
 
@@ -69,7 +69,7 @@ app.get('/', (req, res) => {
 });
 
 // GET a list of all movies
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies', (req, res) => {
     Movies.find()
         .then(function(movies) {
             res.status(201).json(movies);
@@ -81,7 +81,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
 });
 
 // GET a data about a single movie by its title
-app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies/:Title', (req, res) => {
     Movies.findOne({ Title: req.params.Title })
         .then((movie) => {
             res.json(movie);
@@ -93,7 +93,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 });
 
 //Get a list of all directors
-app.get('/directors', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/directors', (req, res) => {
     Directors.find()
         .then(directors => {
             res.status(201).json(directors);
@@ -117,7 +117,7 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
 });
 
 //Get a list of all genres
-app.get('/genres', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/genres', (req, res) => {
     Genres.find()
         .then(genres => {
             res.status(201).json(genres);
