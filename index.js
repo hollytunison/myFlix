@@ -47,7 +47,7 @@ app.use(bodyParser.urlencoded({
 // ------- LOCALHOST CONNECTION STRING for testing purposes ------ //
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true }); //
 
-mongoose.connect(process.env.CONNECTION_URI || 'mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI || 'http://localhost:1234/', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const passport = require('passport');
 app.use(passport.initialize());
