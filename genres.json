@@ -1,9 +1,0 @@
-{"_id":{"$oid":"614df28d27c52a146476a202"},"Name":"Comedy","Description":"Comedy is a genre of film in which the main emphasis is on humor. These films are designed to make the audience laugh through amusement and most often work by exaggerating characteristics for humorous effect."}
-{"_id":{"$oid":"614df28d27c52a146476a203"},"Name":"Drama","Description":"Drama is a genre of film that has a serious tone."}
-{"_id":{"$oid":"614df28d27c52a146476a204"},"Name":"Western","Description":"Western is a genre of film in which the main emphasis is on the American West and often contains cowboys, Indians and settlers set back in the 1880's."}
-{"_id":{"$oid":"614df29827c52a146476a205"},"Name":"Thriller","Description":"Thriller film, also known as suspense film or suspense thriller, is a broad film genre that involves excitement and suspense in the audience."}
-{"_id":{"$oid":"614df38127c52a146476a206"},"Name":"Action","Description":"Action is a genre of film that has a fast moving plot, usually containing violence and a heroic protagonist."}
-{"_id":{"$oid":"614df38f27c52a146476a207"},"Name":"Horror","Description":"Horror is a genre of film which aims to elicit fear in its audience for entertainment."}
-{"_id":{"$oid":"614df3a127c52a146476a208"},"Name":"Fantasy","Description":"Fantasy is a genre of film that contains supernatural events, folklore or exotic fantasy."}
-{"_id":{"$oid":"614df3a927c52a146476a209"},"Name":"Adventure","Description":"Adventure films typically are set in far away lands taking the characters away from their homes to fullfil a goal and embarking on travels, quests, treasure hunts, heroric journeys, and explorations for the unknown."}
-{"_id":{"$oid":"614df3b027c52a146476a20a"},"Name":"Science Fiction","Description":"Science ficion is a genre of imaginative and futuristic concepts such as advanced science and technology; such as, extraterrestrial lifeforms, alien worlds, extrassensory perception and time travel."}
