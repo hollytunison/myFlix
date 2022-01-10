@@ -140,21 +140,21 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false})
 //     }
 // );
 
-// // 6. GET a data about a single director by name
-// app.get(
-//     '/directors/:Name',
-//     passport.authenticate('jwt', { session: false }),
-//     (req, res) => {
-//         Directors.findOne({ Name: req.params.Name })
-//             .then((director) => {
-//                 res.json(director);
-//             })
-//             .catch((err) => {
-//                 console.error(err);
-//                 res.status(500).send('Error: ' + err);
-//             });
-//     }
-// );
+// 6. GET a data about a single director by name
+app.get(
+    '/directors/:Name',
+    passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+        Directors.findOne({ Name: req.params.Name })
+            .then((director) => {
+                res.json(director);
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+    }
+);
 
 // // 7. Get a list of all genres
 // app.get(
