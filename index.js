@@ -112,7 +112,7 @@ app.get('/movies/genres/:Genre', passport.authenticate('jwt', {session: false}),
   });
 
   // 4. Get information about a specific movie director by name
-app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.get('/movies/directors/:Name', passport.authenticate('jwt', {session: false}), (req, res) => {
     Movies.findOne({ 'Director.Name': req.params.Name }).then(
       (movie) => {
         res.json(movie.Director);
@@ -124,21 +124,21 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false})
   });
   
 
-// // 5. Get a list of all directors
-// app.get(
-//     '/directors',
-//     passport.authenticate('jwt', { session: false }),
-//     (req, res) => {
-//         Directors.find()
-//             .then((directors) => {
-//                 res.status(201).json(directors);
-//             })
-//             .catch((error) => {
-//                 console.error(err);
-//                 res.status(500).send('Error: ' + err);
-//             });
-//     }
-// );
+// 5. Get a list of all directors
+app.get(
+    '/directors',
+    passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+        Directors.find()
+            .then((directors) => {
+                res.status(201).json(directors);
+            })
+            .catch((error) => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+    }
+);
 
 // 6. GET a data about a single director by name
 app.get(
