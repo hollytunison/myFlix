@@ -172,21 +172,21 @@ app.get(
     }
 );
 
-// 8. GET a data about a genre
-app.get(
-    '/genres/:Name',
-    passport.authenticate('jwt', { session: false }),
-    (req, res) => {
-        Genres.findOne({ Name: req.params.Name })
-            .then((genre) => {
-                res.json(genre);
-            })
-            .catch((err) => {
-                console.error(err);
-                res.status(500).send('Error: ' + err);
-            });
-    }
-);
+// // 8. GET a data about a genre
+// app.get(
+//     '/genres/:Name',
+//     passport.authenticate('jwt', { session: false }),
+//     (req, res) => {
+//         Genres.findOne({ Name: req.params.Name })
+//             .then((genre) => {
+//                 res.json(genre);
+//             })
+//             .catch((err) => {
+//                 console.error(err);
+//                 res.status(500).send('Error: ' + err);
+//             });
+//     }
+// );
 
 // 9. Add a user
 app.post(
