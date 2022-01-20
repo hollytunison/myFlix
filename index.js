@@ -25,7 +25,7 @@ let allowedOrigins = [
 	'http://testsite.com',
 	'http://localhost:5501',
 	'http://localhost:1234',
-    'https://my80svice.netlify.app/'
+  'https://my80svice.netlify.app/'
 ];
 
 app.use(cors({
