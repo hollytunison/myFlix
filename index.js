@@ -51,7 +51,7 @@ app.use(
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true }); //
 
 mongoose.connect(
-	process.env.CONNECTION_URI || 'mongodb://localhost:27017/myFlixDB',
+	process.env.CONNECTION_URI || 'mongodb+srv://myFlixDBadmin:easy@htdatabase.n7obt.mongodb.net/myFlixDB?retryWrites=true&w=majority',
 	{ useNewUrlParser: true, useUnifiedTopology: true }
 );
 
